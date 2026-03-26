@@ -1,0 +1,6 @@
+*.json
+!.claude/settings.local.json
+*.xlsx
+*.csv
+__pycache__/
+*.pyc

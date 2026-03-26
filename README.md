@@ -24,13 +24,7 @@ The service account needs BigQuery read access to the `nppes-investigator` proje
 
 ## Running an Investigation
 
-Start Claude Code in this directory and invoke the agent:
-
-```
-/npi-investigator
-```
-
-Then give it a starting point:
+Start Claude Code in this directory and describe what you want to investigate:
 
 - An NPI number: `investigate NPI 1093879322`
 - A person's name: `investigate Steven Ripple`

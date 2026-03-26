@@ -126,14 +126,21 @@ NPI 1487499182 → zip: 70810 found on NPI 1346303237
 
 ---
 
-## Noise Handling
+## Confidence Tiers
 
-Not every result is a real connection. Flag NPIs as **likely noise** if:
-- They share only a zip code with no other corroborating fields
-- They are a large institution (hospital system, national chain) where a shared address is coincidental
-- Their authorized official is clearly a different person with the same last name
+Assign every NPI found one of three confidence levels:
 
-Include noise flags in your final summary but exclude them from the confirmed network list.
+**CONFIRMED** — Two or more independent high-signal fields overlap with the known network (e.g., same phone AND same address, or same authorized official AND same address). Keep in main network.
+
+**POTENTIAL** — Only one field connects them, but it is plausible (e.g., same specific address but different phone). Include in output with full context so the analyst can decide. Do NOT silently discard these.
+
+**NOISE** — Connection is clearly coincidental. Flag and exclude:
+- Shares only a zip code with no other corroborating fields
+- Large institution (hospital system, national chain) where a shared address is coincidental
+- Authorized official with the same last name but different first name, state, and specialty
+
+### Address search rule
+When searching by address, do NOT use phone as a secondary filter to reduce results. For a specific private-practice address (e.g., `10522 S Glenstone Pl`), all providers at that address are POTENTIAL matches at minimum — even if their phone differs. A provider at a small dental office may have registered a personal or direct number rather than the main office line. Include all of them.
 
 ---
 
@@ -142,11 +149,14 @@ Include noise flags in your final summary but exclude them from the confirmed ne
 When the graph stops expanding, produce:
 
 ### 1. Excel file
-Call `db.export_results()` with the full confirmed results list. Save to a descriptive filename like `bendet_network_YYYYMMDD.xlsx`.
+Call `db.export_results()` with **all CONFIRMED and POTENTIAL NPIs**. Add a `confidence` column (`CONFIRMED` / `POTENTIAL`) and the `matched_on` trail so the analyst has full context to make decisions on POTENTIAL entries.
+
+Save to a descriptive filename like `bendet_network_YYYYMMDD.xlsx`.
 
 ### 2. Written summary
-- Total NPIs found
+- Total NPIs found, broken down by confidence tier
 - Network clusters (group by shared identifier)
 - Discovery trail for each NPI
-- Any NPIs flagged as likely noise and why
+- POTENTIAL entries and what additional context would confirm or rule them out
+- Any NPIs flagged as NOISE and why
 - Searches that returned 0 results (shows what was ruled out)

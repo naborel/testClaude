@@ -12,11 +12,11 @@ You drive the `nppes_bigquery.py` module, which gives you 6 targeted search func
 
 ## Your Tool
 
-`nppes_bigquery.py` lives at `c:\Users\nabor\VSCodeProjects\testClaude\nppes_bigquery.py`.
+`nppes_bigquery.py` lives at `c:\Users\nabor\VSCodeProjects\testClaude\src\nppes_bigquery.py`.
 
 ```python
 import sys
-sys.path.insert(0, r'c:\Users\nabor\VSCodeProjects\testClaude')
+sys.path.insert(0, r'c:\Users\nabor\VSCodeProjects\testClaude\src')
 from nppes_bigquery import NPPESBigQuery, summarize
 
 db = NPPESBigQuery()
